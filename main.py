@@ -21,17 +21,18 @@ def center_anchor(img):
 
 # kurwa nie wiadomo co robi, aktualnie unused
 
+#Klasa obiekty fizyczne (kolizje)
 class PhysicalObject(sprite.Sprite):
     rotation_speed = 0
     def __init__(self,  *args, **kwargs):
         super().__init__(*args, **kwargs)
-
+    # odpowiada za rotacje pilki (jesli self.rotation i rotation_speed podane) i wywoluje check_bounds
     def update(self):
-        rotation = self.rotation + self.rotation_speed
-
-        self.rotation = rotation
+        rotation = self.rotation + self.rotation_speed  #
+        self.rotation = rotation                        #do wywalenia w przyszlosci
         self.check_bounds()
-
+        self.collision_detect()
+    #dba o to by obiekt nie wylatywał poza ekran
     def check_bounds(self):
         min_x = 0 + int(self.width/2)
         min_y = 0 + int(self.height/2)
@@ -46,18 +47,36 @@ class PhysicalObject(sprite.Sprite):
         elif self.y > max_y:
             self.y = max_y
 
-#definiujemy piłkę
+    def collision_detect(self):
+        for i in range(len(game_objects)):
+            for j in range(i + 1, len(game_objects)):
+                obj_1 = game_objects[i]
+                obj_2 = game_objects[j]
+                if util.collides_with(obj_1, obj_2):
+                    print(1)
 
 class Pilka(PhysicalObject):
     def __init__(self,  *args, **kwargs):
         super(Pilka, self).__init__(*args, **kwargs)
+        # vvv podane wartosci dla obrotu (rotation)
         self.rotation = random.random() * 360.
         self.rotation_speed = (random.random() - 0.5) * max_pilka_spin
+
+    def collision_detect(self):
+        for i in range(len(game_objects)):
+            for j in range(i + 1, len(game_objects)):
+                obj_1 = game_objects[i]
+                obj_2 = game_objects[j]
+                if util.collides_with(obj_1, obj_2):
+                    print(2)
+                    #odbij się i wypierdol
+
 
 class Gracz(PhysicalObject):
     def __init__(self,  *args, **kwargs):
         super(Gracz, self).__init__(*args, **kwargs)
 
+# ładujemy obrazki
 papiez_pilka = image.load("obrazki/pilka.png")
 center_anchor(papiez_pilka)
 
@@ -67,8 +86,7 @@ center_anchor(papiez_player)
 #   definiujemy piłkę
 pilka = Pilka(papiez_pilka, x=win.width / 2, y=win.height / 2)
 
-#definiujemy papieża
-
+#   definiujemy papieża
 gracz = Gracz(papiez_player, x=win.width/2, y=0)
 
 game_objects = pilka, gracz, # bounds, kosz, wielkie_dildo,
@@ -78,9 +96,11 @@ game_objects = pilka, gracz, # bounds, kosz, wielkie_dildo,
 #     if other_object.__class__ == self.__class__:
 #         print(1)
 
+# ustawiamy skale obrazkow żeby papież nie był zbyt duży a piłka zbyt mała
 gracz.scale = 0.5
 pilka.scale = 0.25
 
+# ogarniamy sterowanie klawiaturą
 @win.event
 def on_key_press(symbol, modifier):
     global gora, dol, lewo, prawo
@@ -124,13 +144,17 @@ def on_draw():
     pilka.update()
     gracz.update()
 
+# ustawiamy zegarek żeby rzeczy się działy w czasie (chyba kręcenie piłki tylko, do wywalenia w przyszłości)
 clock.schedule_interval(moveT, 1 / 60)
+
+# uruchamiamy aplikację
 pyglet.app.run()
 
 #TODO: Zrobić kolizje obiektów
 #TODO: Dodać odbijanie piłki
 #TODO: Dodać tło
 #TODO: Dodać kosz (nie obiekt)
+# kosz może być obiektem, tylko bez odbijania po wykryciu kolizji (punkt zamiast tego) /Bizon
 #TODO: Dodać zdobywanie punktów za piłkę która wpada do kosza
 #TODO: Dodać obiekt, który blokuje piłę od boku kosza
 #TODO: Zablokować wpadanie piłki do kosza od dołu
