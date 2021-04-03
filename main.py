@@ -50,13 +50,6 @@ class PhysicalObject(sprite.Sprite):
             self.y = min_y
         elif self.y > max_y:
             self.y = max_y
-        #TODO: Zrobić kolizje obiektów
-        #TODO: Dodać odbijanie piłki
-        #TODO: Dodać tło
-        #TODO: Dodać kosz (nie obiekt)
-        #TODO: Dodać zdobywanie punktów za piłkę która wpada do kosza
-        #TODO: Dodać obiekt, który blokuje piłę od boku kosza
-        #TODO: Zablokować wpadanie piłki do kosza od dołu
 
 #definiujemy piłkę
 class Pilka(PhysicalObject):
@@ -141,3 +134,11 @@ def on_draw():
 
 clock.schedule_interval(moveT, 1 / 60)
 pyglet.app.run()
+
+#TODO: Zrobić kolizje obiektów
+#TODO: Dodać odbijanie piłki
+#TODO: Dodać tło
+#TODO: Dodać kosz (nie obiekt)
+#TODO: Dodać zdobywanie punktów za piłkę która wpada do kosza
+#TODO: Dodać obiekt, który blokuje piłę od boku kosza
+#TODO: Zablokować wpadanie piłki do kosza od dołu
