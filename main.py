@@ -1,4 +1,5 @@
-import pyglet, util
+import pyglet
+import util
 from pyglet.window import Window, key
 from pyglet import image
 from pyglet import sprite
@@ -13,14 +14,12 @@ batch = pyglet.graphics.Batch()
 max_pilka_spin = 20
 gora, dol, lewo, prawo = False, False, False, False
 
-#Klasa obiekty fizyczne (kolizje)
+# centruje punkt odniesienia (np. obrotu) obrazka img
+def center_anchor(img):
+    img.anchor_x = img.width // 2
+    img.anchor_y = img.height // 2
 
-def wrap(value, width):
-    if value > width:
-        value -= width
-    if value < 0:
-        value += width
-    return value
+# kurwa nie wiadomo co robi, aktualnie unused
 
 class PhysicalObject(sprite.Sprite):
     rotation_speed = 0
@@ -59,25 +58,25 @@ class Gracz(PhysicalObject):
     def __init__(self,  *args, **kwargs):
         super(Gracz, self).__init__(*args, **kwargs)
 
-
 papiez_pilka = image.load("obrazki/pilka.png")
-papiez_pilka.anchor_x = int(papiez_pilka.width/2)
-papiez_pilka.anchor_y = int(papiez_pilka.height/2)
+center_anchor(papiez_pilka)
 
 papiez_player = image.load("obrazki/papiez.png")
-papiez_player.anchor_x = int(papiez_player.width/2)
-papiez_player.anchor_y = int(papiez_player.height/2)
+center_anchor(papiez_player)
 
+#   definiujemy piłkę
 pilka = Pilka(papiez_pilka, x=win.width / 2, y=win.height / 2)
 
 #definiujemy papieża
 
 gracz = Gracz(papiez_player, x=win.width/2, y=0)
 
+game_objects = pilka, gracz, # bounds, kosz, wielkie_dildo,
 
-def handle_collision_with(self, other_object):
-    if other_object.__class__ == self.__class__:
-        print(1)
+# nieudolnie próbujemy ogarnąć kolizje
+# def handle_collision_with(self, other_object):
+#     if other_object.__class__ == self.__class__:
+#         print(1)
 
 gracz.scale = 0.5
 pilka.scale = 0.25
@@ -114,10 +113,8 @@ def moveT(dt):
         gracz.y -= 5
     if lewo == True:
         gracz.x -= 5
-        gracz.rotation = 0
     elif prawo == True:
         gracz.x += 5
-        gracz.rotation = 0
 
 @win.event
 def on_draw():
