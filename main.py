@@ -57,7 +57,7 @@ class PhysicalObject(sprite.Sprite):
         #TODO: Dodać zdobywanie punktów za piłkę która wpada do kosza
         #TODO: Dodać obiekt, który blokuje piłę od boku kosza
         #TODO: Zablokować wpadanie piłki do kosza od dołu
-        #TODO: Finisz
+
 #definiujemy piłkę
 class Pilka(PhysicalObject):
     def __init__(self,  *args, **kwargs):
