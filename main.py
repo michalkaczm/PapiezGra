@@ -62,16 +62,6 @@ class Pilka(PhysicalObject):
         self.rotation = random.random() * 360.
         self.rotation_speed = (random.random() - 0.5) * max_pilka_spin
 
-    def collision_detect(self):
-        for i in range(len(game_objects)):
-            for j in range(i + 1, len(game_objects)):
-                obj_1 = game_objects[i]
-                obj_2 = game_objects[j]
-                if util.collides_with(obj_1, obj_2):
-                    print(2)
-                    #odbij się i wypierdol
-
-
 class Gracz(PhysicalObject):
     def __init__(self,  *args, **kwargs):
         super(Gracz, self).__init__(*args, **kwargs)
