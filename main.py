@@ -28,13 +28,9 @@ class PhysicalObject(sprite.Sprite):
         super().__init__(*args, **kwargs)
 
     def update(self):
-        x = self.x
-        y = self.y
         rotation = self.rotation + self.rotation_speed
 
-        self.x = wrap(x, int(win.width))
-        self.y = wrap(y, int(win.height))
-        self.rotation = wrap(rotation, 360.)
+        self.rotation = rotation
         self.check_bounds()
 
     def check_bounds(self):
@@ -52,6 +48,7 @@ class PhysicalObject(sprite.Sprite):
             self.y = max_y
 
 #definiujemy piłkę
+
 class Pilka(PhysicalObject):
     def __init__(self,  *args, **kwargs):
         super(Pilka, self).__init__(*args, **kwargs)
@@ -74,8 +71,6 @@ papiez_player.anchor_y = int(papiez_player.height/2)
 pilka = Pilka(papiez_pilka, x=win.width / 2, y=win.height / 2)
 
 #definiujemy papieża
-
-
 
 gracz = Gracz(papiez_player, x=win.width/2, y=0)
 
