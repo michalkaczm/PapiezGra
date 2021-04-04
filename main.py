@@ -53,7 +53,7 @@ class PhysicalObject(sprite.Sprite):
                 obj_1 = game_objects[i]
                 obj_2 = game_objects[j]
                 if util.collides_with(obj_1, obj_2):
-                    print(1)
+                    return True
 
 class Pilka(PhysicalObject):
     def __init__(self,  *args, **kwargs):
@@ -68,7 +68,7 @@ class Pilka(PhysicalObject):
                 obj_1 = game_objects[i]
                 obj_2 = game_objects[j]
                 if util.collides_with(obj_1, obj_2):
-                    print(2)
+                    return True
                     #odbij się i wypierdol
 
 
@@ -89,7 +89,7 @@ pilka = Pilka(papiez_pilka, x=win.width / 2, y=win.height / 2)
 #   definiujemy papieża
 gracz = Gracz(papiez_player, x=win.width/2, y=0)
 
-game_objects = pilka, gracz, # bounds, kosz, wielkie_dildo,
+game_objects = gracz, pilka # bounds, kosz, wielkie_dildo,
 
 # nieudolnie próbujemy ogarnąć kolizje
 # def handle_collision_with(self, other_object):
