@@ -53,7 +53,7 @@ class PhysicalObject(sprite.Sprite):
                 obj_1 = game_objects[i]
                 obj_2 = game_objects[j]
                 if util.collides_with(obj_1, obj_2):
-                    return True
+                    return True """Chyba się zapierdole ni chuja nic nie mogę wymyśleć"""
 
 class Pilka(PhysicalObject):
     def __init__(self,  *args, **kwargs):
