@@ -8,7 +8,8 @@ import random
 
 #Globalne
 
-win = Window(fullscreen = True)
+# win = Window(fullscreen = True)
+win = Window(width=1280, height=720)
 
 batch = pyglet.graphics.Batch()
 max_pilka_spin = 20
