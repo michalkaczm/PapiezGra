@@ -11,3 +11,5 @@ def collides_with(self, other_object):
     actual_distance = distance(self.position, other_object.position)
 
     return (actual_distance <= collision_distance)
+
+

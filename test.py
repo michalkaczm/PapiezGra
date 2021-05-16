@@ -1,5 +1,4 @@
 import pyglet
-import util
 from pyglet.window import Window, key
 from pyglet import image
 from pyglet import sprite
@@ -11,6 +10,10 @@ win = Window(width=1280, height=720)
 batch = pyglet.graphics.Batch()
 gora, dol, lewo, prawo = False, False, False, False
 
+def center_anchor(img):
+    img.anchor_x = img.width // 2
+    img.anchor_y = img.height // 2
+
 #Klasa obiekty fizyczne (kolizje)
 class PhysicalObject(sprite.Sprite):
     rotation_speed = 0
@@ -21,7 +24,7 @@ class PhysicalObject(sprite.Sprite):
         rotation = self.rotation + self.rotation_speed  #
         self.rotation = rotation                        #do wywalenia w przyszlosci
         self.check_bounds()
-        self.collision_detect()
+        # self.collision_detect()
     #dba o to by obiekt nie wylatywał poza ekran
     def check_bounds(self):
         min_x = 0 + int(self.width/2)
@@ -37,23 +40,31 @@ class PhysicalObject(sprite.Sprite):
         elif self.y > max_y:
             self.y = max_y
 
-    # def collision_detect(self):
-    #     for i in range(len(game_objects)):
-    #         for j in range(i + 1, len(game_objects)):
-    #             obj_1 = game_objects[i]
-    #             obj_2 = game_objects[j]
-    #             if util.collides_with(obj_1, obj_2):
-    #                 return True
-    #                 """Chyba się zapierdole ni chuja nic nie mogę wymyśleć"""
-
-gracz =
-
-pilka =
+gracz = image.load("obrazki/kwadracik.png")
+center_anchor(gracz)
+pilka = image.load("obrazki/kwadracik2.png")
+center_anchor(pilka)
 
 
+# def collision_detect():
+#     for i in range(len(game_objects)):
+#         for j in range(i + 1, len(game_objects)):
+#             obj_1 = game_objects[i]
+#             obj_2 = game_objects[j]
+#             if util.collides_with(obj_1, obj_2):
+#                 return True
+
+class Objekt(collision.Circle(pos = collision.Vector, r = [] )):
+    def __init__(self, pos, r):
+        super().__init__()
 
 
+papiez_wektor = collision.Vector(500, 600)
+pilka_wektor = collision.Vector(100, 100)
+papiez_gracz = Objekt(gracz, pos = papiez_wektor, r = 100 )
+papiez_pilka = Objekt(pilka, pos = pilka_wektor, r = 100)
 
+game_objects = papiez_gracz, papiez_pilka
 
 
 
@@ -64,11 +75,11 @@ def on_key_press(symbol, modifier):
     global gora, dol, lewo, prawo
     if symbol == key.A:
         lewo = True
-    elif symbol == key.D:
+    if symbol == key.D:
         prawo = True
-    elif symbol == key.W:
+    if symbol == key.W:
         gora = True
-    elif symbol == key.S:
+    if symbol == key.S:
         dol = True
 
 @win.event
@@ -76,31 +87,41 @@ def on_key_release(symbol, modifiers):
     global gora, dol, lewo, prawo
     if symbol == key.W:
         gora = False
-    elif symbol == key.A:
+    if symbol == key.A:
         lewo = False
-    elif symbol == key.S:
+    if symbol == key.S:
         dol = False
-    elif symbol == key.D:
+    if symbol == key.D:
         prawo = False
 
 @win.event
 def moveT(dt):
+    # position = papiez_gracz.y, papiez_gracz.x
     if gora == True:
-        gracz.y += 5
+        papiez_gracz.y += 5
     elif dol == True:
-        gracz.y -= 5
+        papiez_gracz.y -= 5
     if lewo == True:
-        gracz.x -= 5
+        papiez_gracz.x -= 5
     elif prawo == True:
-        gracz.x += 5
+        papiez_gracz.x += 5
+    print(collision.collide(papiez_gracz, papiez_pilka))
+    # if collision_detect() and gora:
+    #     papiez_gracz.y = position[0] - 1
+    # if collision_detect() and dol:
+    #     papiez_gracz.y = position[0] + 1
+    # if collision_detect() and lewo:
+    #     papiez_gracz.x = position[1] + 6
+    # if collision_detect() and prawo:
+    #     papiez_gracz.x = position[1] - 6
 
 @win.event
 def on_draw():
     win.clear()
-    gracz.draw()
-    pilka.draw()
-    pilka.update()
-    gracz.update()
+    papiez_gracz.draw()
+    papiez_pilka.draw()
+    papiez_pilka.update()
+    papiez_gracz.update()
 
 # ustawiamy zegarek żeby rzeczy się działy w czasie (to jest do ruszania się)
 clock.schedule_interval(moveT, 1 / 60)
