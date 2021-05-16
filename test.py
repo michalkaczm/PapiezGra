@@ -1,4 +1,5 @@
 import pyglet
+import util
 from pyglet.window import Window, key
 from pyglet import image
 from pyglet import sprite
@@ -46,23 +47,18 @@ pilka = image.load("obrazki/kwadracik2.png")
 center_anchor(pilka)
 
 
-# def collision_detect():
-#     for i in range(len(game_objects)):
-#         for j in range(i + 1, len(game_objects)):
-#             obj_1 = game_objects[i]
-#             obj_2 = game_objects[j]
-#             if util.collides_with(obj_1, obj_2):
-#                 return True
-
-class Objekt(collision.Circle(pos = collision.Vector, r = [] )):
-    def __init__(self, pos, r):
-        super().__init__()
+def collision_detect():
+    for i in range(len(game_objects)):
+        for j in range(i + 1, len(game_objects)):
+            obj_1 = game_objects[i]
+            obj_2 = game_objects[j]
+            if util.collides_with(obj_1, obj_2):
+                return True
 
 
-papiez_wektor = collision.Vector(500, 600)
-pilka_wektor = collision.Vector(100, 100)
-papiez_gracz = Objekt(gracz, pos = papiez_wektor, r = 100 )
-papiez_pilka = Objekt(pilka, pos = pilka_wektor, r = 100)
+
+papiez_gracz = PhysicalObject(gracz, 100, 200)
+papiez_pilka = PhysicalObject(pilka, 600, 400)
 
 game_objects = papiez_gracz, papiez_pilka
 
@@ -96,7 +92,7 @@ def on_key_release(symbol, modifiers):
 
 @win.event
 def moveT(dt):
-    # position = papiez_gracz.y, papiez_gracz.x
+    position = papiez_gracz.y, papiez_gracz.x
     if gora == True:
         papiez_gracz.y += 5
     elif dol == True:
@@ -105,15 +101,14 @@ def moveT(dt):
         papiez_gracz.x -= 5
     elif prawo == True:
         papiez_gracz.x += 5
-    print(collision.collide(papiez_gracz, papiez_pilka))
-    # if collision_detect() and gora:
-    #     papiez_gracz.y = position[0] - 1
-    # if collision_detect() and dol:
-    #     papiez_gracz.y = position[0] + 1
-    # if collision_detect() and lewo:
-    #     papiez_gracz.x = position[1] + 6
-    # if collision_detect() and prawo:
-    #     papiez_gracz.x = position[1] - 6
+    if collision_detect() and gora:
+        papiez_gracz.y = position[0] - 1
+    if collision_detect() and dol:
+        papiez_gracz.y = position[0] + 1
+    if collision_detect() and lewo:
+        papiez_gracz.x = position[1] + 6
+    if collision_detect() and prawo:
+        papiez_gracz.x = position[1] - 6
 
 @win.event
 def on_draw():
