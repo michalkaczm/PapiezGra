@@ -46,6 +46,7 @@ center_anchor(gracz)
 pilka = image.load("obrazki/kwadracik2.png")
 center_anchor(pilka)
 
+123
 
 def collision_detect():
     for i in range(len(game_objects)):
